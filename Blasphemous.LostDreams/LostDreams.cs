@@ -29,6 +29,9 @@ public class LostDreams : BlasMod
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
 
+    // Images
+    private Sprite _npcImage;
+
     /// <summary>
     /// Register handlers and create special effects
     /// </summary>
@@ -37,6 +40,11 @@ public class LostDreams : BlasMod
         LocalizationHandler.RegisterDefaultLanguage("en");
         Config cfg = ConfigHandler.Load<Config>();
         ConfigHandler.Save(cfg);
+
+        FileHandler.LoadDataAsSprite("npc.png", out _npcImage, new ModdingAPI.Files.SpriteImportOptions()
+        {
+            Pivot = new Vector2(0.5f, 0)
+        });
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502_MAX_CHARGES, cfg.RB502_MAX_MULTIPLIER);
@@ -91,6 +99,10 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
             new ColliderModifier("Floor", new Vector2(2.7f, 0.4f))));
+
+        provider.RegisterObjectCreator("npc", new ObjectCreator(
+            new SpriteLoader("NPC", _npcImage),
+            new NoModifier("NPC")));
     }
 
     // Temp !!!

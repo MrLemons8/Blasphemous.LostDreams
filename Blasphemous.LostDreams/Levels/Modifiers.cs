@@ -1,5 +1,7 @@
 ﻿using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
+using System.Collections;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Levels;
@@ -31,5 +33,31 @@ public class ColliderModifier : IModifier
 
         var collider = obj.AddComponent<BoxCollider2D>();
         collider.size = _size;
+    }
+}
+
+
+//public class SpriteModifier : IModifier
+//{
+//    public void Apply(GameObject obj, ObjectData data)
+//    {
+
+//    }
+//}
+
+public class SpriteLoader(string name, Sprite image) : ILoader
+{
+    public GameObject Result { get; private set; }
+
+    public IEnumerator Apply()
+    {
+        var obj = new GameObject(name);
+
+        var sr = obj.AddComponent<SpriteRenderer>();
+        sr.sprite = image;
+        sr.sortingLayerName = "After Player";
+
+        Result = obj;
+        yield break;
     }
 }
